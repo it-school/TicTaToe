@@ -8,7 +8,7 @@ public class Main {
         System.out.println("\n\n");
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                System.out.print("\t" + field[i][j]);
+                System.out.print("\t" + (field[i][j] == 0 ? " " : (field[i][j] == 1 ? "X" : "O")));
             }
             System.out.println();
         }
@@ -31,17 +31,49 @@ public class Main {
 
         for (int i = 0; i < n; i++) {
             if (field[i][0] == m && field[i][1] == m && field[i][2] == m) {
-                isVictory = true;
+                return true;
+            }
+        }
+        for (int i = 0; i < n; i++)
+        {
+            if (field[0][i] == m && field[1][i] == m && field[2][i] == m)
+            {
+                return true;
+            }
+        }
+        int i = 0;
+        for (i = 0; i < n - 1; i++)
+        {
+            if (field[i][i] == 0 || field[i][i] != field[i + 1][i + 1])
+            {
+                break;
+            }
+        }
+        if (i == 2)
+        {
+            return true;
+        }
+
+        for (i = 0; i < n - 1; i++)
+        {
+            if (field[i][i] == 0 || field[i][n - i - 1] != field[i + 1][n - 1 - i - 1])
+            {
                 break;
             }
         }
 
-        return isVictory;
+        if (i == 2)
+        {
+            return true;
+        }
+
+
+        return false;
     }
 
     public static void main(String[] args) {
         final int n = 3;
-        int[][] field = new int[3][3];
+        int[][] field = new int[n][n];
 
         for (int i = 0; i < n; i++)
             for (int j = 0; j < n; j++)
@@ -49,16 +81,17 @@ public class Main {
 
         ShowField(field, n);
 
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < n * n; i++)
+        {
             NextMove(field, n, i % 2 + 1);
             ShowField(field, n);
-            if (CheckVictory(field, n, i % 2 + 1)) {
-                System.out.println("Winner is " + (i % 2 + 1));
-                break;
+            if (CheckVictory(field, n, i % 2 + 1))
+            {
+                System.out.println("Winner is " + ((i % 2 + 1) == 1 ? "X" : "0"));
+                return;
             }
         }
 
-
-        // write your code here
+        System.out.println("Draw");
     }
 }
